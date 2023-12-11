@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* Estilos personalizados */
+    body {
+      background-color: #f2f7f2;
+      color: #37474f;
+      font-family: 'Arial', sans-serif;
+      transition: background-color 0.5s ease;
+    }
+
+    .container-fluid {
+      max-width: 1200px;
+      margin: 0 auto;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      padding: 20px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      transition: box-shadow 0.5s ease;
+    }
+
+    h2 {
+      color: #003366;
+    }
+
+    .brand-button,
+    .product-button,
+    button.btn-primary {
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .brand-button:hover,
+    .product-button:hover,
+    button.btn-primary:hover {
+      background-color: #c3d4cb;
+      transform: scale(1.05);
+    }
+
+    .brand-button.active {
+      background-color: #c3d4cb;
+    }
+
+    .product-button.active {
+      background-color: #9fb6af;
+    }
+
+    .details {
+      background-color: #f9f9f9;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .details form {
+      margin-top: 20px;
+    }
+  </style>
+  <title>Tu Sitio Web</title>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Columna de Proveedores -->
+    <div class="col-md-3 left-column">
+      <h2>Proveedores</h2>
+      <!-- Lista de Marcas -->
+      <ul class="list-group">
+        <li class="list-group-item brand-button" data-brand="Marca1">Marca 1</li>
+        <li class="list-group-item brand-button" data-brand="Marca2">Marca 2</li>
+        <!-- Agrega más marcas según sea necesario -->
+      </ul>
+    </div>
+
+    <!-- Columna de Productos -->
+    <div class="col-md-3 middle-column">
+      <h2>Productos</h2>
+      <!-- Lista de Productos por Marca -->
+      <ul class="list-group" id="product-list">
+        <!-- Productos serán agregados dinámicamente aquí -->
+      </ul>
+    </div>
+
+    <!-- Columna de Detalles del Producto -->
+    <div class="col-md-6 right-column">
+      <!-- Detalles del Producto -->
+      <div class="details" id="product-details">
+        <!-- Formulario para detalles del producto -->
+        <form>
+          <div class="form-group">
+            <label for="image">Cargar Imágenes</label>
+            <input type="file" class="form-control" id="image">
+          </div>
+          <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" id="name">
+          </div>
+          <div class="form-group">
+            <label for="cost">Costo</label>
+            <input type="text" class="form-control" id="cost">
+          </div>
+          <div class="form-group">
+            <label for="increase">Porcentaje de Aumento</label>
+            <input type="text" class="form-control" id="increase">
+          </div>
+          <div class="form-group">
+            <label for="shipping">Envío</label>
+            <input type="text" class="form-control" id="shipping">
+          </div>
+          <div class="form-group">
+            <label for="total">Precio Final</label>
+            <input type="text" class="form-control" id="total" readonly>
+          </div>
+          <button type="button" class="btn btn-primary">MercadoLibre</button>
+          <button type="button" class="btn btn-primary">Amazon</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts de Bootstrap y JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  const data = {
+    Marca1: [
+      { name: 'Producto1', cost: 10, increase: 5, shipping: 2 },
+      { name: 'Producto2', cost: 20, increase: 8, shipping: 3 },
+      // ... hasta 15 productos ...
+    ],
+    Marca2: [
+      { name: 'ProductoA', cost: 15, increase: 6, shipping: 2 },
+      { name: 'ProductoB', cost: 25, increase: 10, shipping: 4 },
+      // ... hasta 15 productos ...
+    ],
+    // Agrega más marcas según sea necesario
+  };
+
+  $('.brand-button').on('click', function () {
+    const brand = $(this).data('brand');
+    const productList = $('#product-list');
+    productList.empty();
+    $('.brand-button').removeClass('active');
+    $(this).addClass('active');
+
+    data[brand].forEach((product, index) => {
+      productList.append(`<li class="list-group-item product-button" data-index="${index}">${product.name}</li>`);
+    });
+  });
+
+  $('#product-list').on('click', '.product-button', function () {
+    const brand = $('.brand-button.active').data('brand');
+    const index = $(this).data('index');
+    const product = data[brand][index];
+
+    displayProductDetails(product);
+  });
+
+  function displayProductDetails(product) {
+    $('#product-details #image').val('');
+    $('#product-details #name').val(product.name);
+    $('#product-details #cost').val(product.cost);
+    $('#product-details #increase').val(product.increase);
+    $('#product-details #shipping').val(product.shipping);
+
+    const total = product.cost + (product.cost * (product.increase / 100));
+    $('#product-details #total').val(total.toFixed(2));
+  }
+</script>
+</body>
+</html>

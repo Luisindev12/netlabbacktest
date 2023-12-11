@@ -1,0 +1,41 @@
+body {
+    background-color: #fff;
+  }
+  
+  .container {
+    width: 960px;
+    margin: 0 auto;
+  }
+  
+  .col-md-3 {
+    background-color: #f1f1f1;
+    padding: 20px;
+  }
+  
+  .list-group {
+    margin-bottom: 0;
+  }
+  
+  .list-group-item {
+    border-radius: 0;
+  }
+  
+  .form-group {
+    margin-bottom: 10px;
+  }
+  
+  input[type="file"] {
+    width: 100%;
+  }
+  
+  .form-check {
+    margin-bottom: 10px;
+  }
+  
+  .form-check-label {
+    font-size: 18px;
+  }
+  
+  .form-check-inline {
+    margin-right: 10px;
+  }
